@@ -1,0 +1,38 @@
+* {
+	box-sizing: border-box;
+}
+
+.registerForm {
+	display: grid;
+	grid-template-columns: 100px auto;
+}
+
+.registerForm button, .registerForm .error {
+	grid-column: 1 / span 2;
+}
+
+
+.vacations {
+	display: flex;
+	flex-wrap: wrap;
+}
+
+.card {
+	background-color: aquamarine;
+
+}
+
+#components-form-demo-normal-login .login-form {
+	max-width: 300px;
+  }
+  #components-form-demo-normal-login .login-form-forgot {
+	float: right;
+  }
+  #components-form-demo-normal-login .ant-col-rtl .login-form-forgot {
+	float: left;
+  }
+  #components-form-demo-normal-login .login-form-button {
+	width: 100%;
+  }
+
+
