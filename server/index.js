@@ -17,6 +17,10 @@ app.use(express.static('public'));
 app.use(express.json());
 app.use(cookieParser()); // parser cookie -> req.cookies
 
+const routes = require('./routes');
+
+app.use('/api/vacations', hasToken, routes.vacation);
+
 const server = http.createServer(app);
 
 // INSERT RESULT
@@ -123,30 +127,6 @@ app.get('/api/auth/current', hasToken, async (req, res) => {
 	}
 });
 
-// create vacation only admin
-app.post('/api/vacations', hasToken, isAdmin, upload.single('image'), async (req, res) => {
-	try {
-		const { body, file } = req;
-
-		const image = `/images/${file.filename}`;
-		console.log(req.body);
-		const { description, price, destination, startDate, endDate } = req.body;
-
-		const query = `
-			INSERT INTO Vacations (description, price, destination, startDate, endDate, image) 
-			VALUES ('${description}', ${price}, '${destination}', '${startDate}', '${endDate}', '${image}')
-		
-		`;
-
-		const [result] = await global.connection.execute(query);
-
-		res.json({ id: result.insertId, description, price, destination, startDate, endDate, image });
-	} catch (error) {
-		console.log('login err', error.message);
-		res.status(500).json({ message: 'Server error' });
-	}
-});
-
 // delete vacations
 app.delete('/api/vacations/:id', async (req, res) => {
 	try {
@@ -219,7 +199,7 @@ server.listen(5000, async () => {
 		database: 'vacationdb',
 		host: 'localhost',
 		user: 'root',
-		password: 'ofirshlomo',
+		password: '123qwe!!',
 	});
 	global.connection = connection;
 	console.log('server work 5000');
