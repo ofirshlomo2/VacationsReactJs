@@ -10,7 +10,7 @@ function VacationList(props) {
 	const { vacations, user } = props;
 	const isAdmin = user?.role === 1;
 
-   const dispatch = useDispatch();
+	const dispatch = useDispatch();
 
 	const sortByFollow = (a, b) => {
 		if (a.isFollow) return -1;
@@ -61,7 +61,10 @@ function VacationList(props) {
 				const isFollow = !!vacation.isFollow;
 
 				const actions = isAdmin
-					? [<span>edit</span>, <span onClick={() => deleteVacation(vacation.id)}>delete</span>]
+					? [
+							<span onClick={() => dispatch(Actions.vacationModal.open({ vacation, isEdit: true }))}>edit</span>,
+							<span onClick={() => deleteVacation(vacation.id)}>delete</span>,
+					  ]
 					: [<span onClick={() => toggleFollow(vacation.id)}>{isFollow ? 'UnFollow' : 'Follow'}</span>];
 				return <Vacation key={vacation.id} vacation={vacation} actions={actions} />;
 			})}

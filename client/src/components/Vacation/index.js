@@ -1,4 +1,4 @@
 import VacationList from './VacationList';
 import Vacation from './Vacation';
-
-export { Vacation, VacationList };
+import VacationModal from './VacationModal';
+export { Vacation, VacationList, VacationModal };

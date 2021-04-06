@@ -1,3 +1,3 @@
-import { Vacation, VacationList } from './Vacation';
+import { Vacation, VacationList, VacationModal } from './Vacation';
 
-export { Vacation, VacationList };
+export { Vacation, VacationList, VacationModal };
