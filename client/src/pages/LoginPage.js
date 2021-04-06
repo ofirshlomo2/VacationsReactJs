@@ -1,25 +1,28 @@
 import { useState } from 'react';
-
 import { useDispatch } from 'react-redux';
-
 import { useHistory } from 'react-router-dom';
-
 import { Actions } from '../store';
 
-
-import { Form, Input, Button } from 'antd';
-import { UserOutlined, LockOutlined } from '@ant-design/icons';
-
+import Button from '@material-ui/core/Button';
+import TextField from '@material-ui/core/TextField';
+import Box from '@material-ui/core/Box';
+import Typography from '@material-ui/core/Typography';
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
 
 
 
 function LoginPage() {
+
 	const [form, setForm] = useState({});
 
 	// hook get store.dispatch method
 	const dispatch = useDispatch();
-
 	const history = useHistory();
+
+
+
+
 
 	const onSubmit = async event => {
 		event.preventDefault();
@@ -43,16 +46,72 @@ function LoginPage() {
 		setForm({ ...form, [name]: value });
 	};
 
-	return (
-		<div className="App">
-			<form onChange={onChange} onSubmit={onSubmit}>
-				<input type="text" name="userName" />
-				<input type="password" name="password" />
-				<button>login</button>
-			</form>
-		</div>
 
+
+	const useStyles = makeStyles((theme) => ({
+		paper: {
+			marginTop: theme.spacing(8),
+			display: 'flex',
+			flexDirection: 'column',
+			alignItems: 'center',
+		},
+		avatar: {
+			margin: theme.spacing(1),
+			backgroundColor: theme.palette.secondary.main,
+		},
+		form: {
+			width: '100%', // Fix IE 11 issue.
+			marginTop: theme.spacing(1),
+		},
+		submit: {
+			margin: theme.spacing(3, 0, 2),
+		},
+	}));
+
+	const classes = useStyles();
+	return (
+		<Container component="main" maxWidth="xs">
+			<Typography component="h1" variant="h5">
+				Log In
+		  </Typography>
+			<form className={classes.form} onChange={onChange} onSubmit={onSubmit}>
+				<TextField
+					name="userName"
+					variant="outlined"
+					margin="normal"
+					required
+					fullWidth
+					id="userName"
+					label="user name"
+					autoFocus
+				/>
+				<TextField
+					name="password"
+					variant="outlined"
+					margin="normal"
+					required
+					fullWidth
+					label="Password"
+					type="password"
+					id="password"
+					autoComplete="current-password"
+				/>
+				<Button
+					type="submit"
+					fullWidth
+					variant="contained"
+					color="primary"
+					className={classes.submit}
+				>
+					log In
+			</Button>
+			</form>
+
+			<Box mt={8}>
+			</Box>
+		</Container>
 	);
+
 };
 
 export default LoginPage;

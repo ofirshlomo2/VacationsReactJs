@@ -36,7 +36,7 @@ function validateRegister(body) {
 
 	return null;
 }
-app.post('/api/regiser', async (req, res) => {
+app.post('/api/register', async (req, res) => {
 	try {
 		const errorMessage = validateRegister(req.body);
 

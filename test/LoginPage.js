@@ -38,36 +38,13 @@ function LoginPage() {
 	return (
 
 
-
-
-<Form onChange={onChange} onSubmit={onSubmit}>
-			<Form.Item
-				name="userName"
-			>
-				<Input prefix={<UserOutlined className="site-form-item-icon" />}
-					type="text"
-					placeholder="Username"
-					name="userName" />
-			</Form.Item>
-
-			<Form.Item
-				name="password"
-			>
-				<Input
-					prefix={<LockOutlined className="site-form-item-icon" />}
-					type="password"
-					name="password"
-					placeholder="Password"
-				/>
-			</Form.Item>
-
-			<Form.Item>
-				<Button type="primary" htmlType="submit" className="login-form-button">
-					Log in
-		  </Button>
-
-			</Form.Item>
-		</Form>
+<div className="App">
+<form onChange={onChange} onSubmit={onSubmit}>
+	<input type="text" name="userName" />
+	<input type="password" name="password" />
+	<button>login</button>
+</form>
+</div>
 	);
 }
 
