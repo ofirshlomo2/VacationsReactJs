@@ -5,6 +5,47 @@ const { isAdmin } = require('../middleware');
 const multer = require('multer');
 const upload = multer({ dest: 'public/images/', preservePath: true });
 
+// delete vacations
+router.delete('/:id', async (req, res) => {
+	try {
+		const { id } = req.params;
+
+		const queryF = `DELETE FROM Followers WHERE vacationId = ${id};`;
+		const query = `DELETE FROM Vacations WHERE id = ${id};`;
+
+		// query databa
+		const [followrsResult] = await global.connection.execute(queryF);
+		const [vacations] = await global.connection.execute(query);
+		res.json(vacations);
+		global.socket.emit('VACATION_DELETE', { id: +id });
+
+		console.log(`vacation ${id} was deleted`);
+	} catch (error) {
+		console.log('delete vacation err', error.message);
+		res.status(500).json({ message: 'Server error' });
+	}
+});
+
+router.get('/', async (req, res) => {
+	try {
+		const query = `SELECT 
+		v.description, v.price, v.destination, 
+		v.startDate, v.endDate, v.id, v.image,
+		f.userId as isFollow
+		FROM Vacations As v
+		LEFT JOIN Followers As f
+		ON v.id = f.vacationId;
+		;`;
+
+		// query databa
+		const [vacations] = await global.connection.execute(query);
+		res.json(vacations);
+	} catch (error) {
+		console.log('login err', error.message);
+		res.status(500).json({ message: 'Server error' });
+	}
+});
+
 // update
 router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
 	try {
@@ -18,7 +59,7 @@ router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
 
 		const { description, price, destination, startDate, endDate } = req.body;
 
-		const imageSet = file ? `, image='${image}` : '';
+		const imageSet = file ? `, image='${image}'` : '';
 
 		const query = `
          UPDATE  Vacations 
@@ -28,11 +69,10 @@ router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
          WHERE id=${id}
 		`;
 
-		console.log('query', query);
-
 		const [result] = await global.connection.execute(query);
-
-		res.json({ id: result.insertId, description, price, destination, startDate, endDate, image });
+		const newVacation = { id: +id, description, price, destination, startDate, endDate, image };
+		res.json(newVacation);
+		global.socket.emit('VACATION_EDIT', newVacation);
 	} catch (error) {
 		console.log('login err', error.message);
 		res.status(500).json({ message: 'Server error' });
