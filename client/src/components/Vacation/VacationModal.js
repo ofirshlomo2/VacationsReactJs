@@ -39,7 +39,11 @@ function getFormData(object) {
 	const form_data = new FormData();
 
 	for (const key in object) {
-		form_data.append(key, object[key]);
+		if ((['startDate', 'endDate'].includes(key))) {
+			form_data.append(key, format(new Date(object[key]), 'yyyy-MM-dd'));
+		} else {
+			form_data.append(key, object[key]);
+		}
 	}
 
 	return form_data;
@@ -67,7 +71,6 @@ const VacationModal = () => {
 				body: getFormData({ ...form, image }),
 			});
 			const body = await res.json();
-			return;
 			dispatch(Actions.vacations.update(body));
 		} else {
 			const res = await fetch('/api/vacations', {
@@ -75,7 +78,7 @@ const VacationModal = () => {
 				body: getFormData({ ...form, image }),
 			});
 			const body = await res.json();
-			return;
+
 			dispatch(Actions.vacations.add(body));
 		}
 
@@ -97,8 +100,7 @@ const VacationModal = () => {
 				{fields.map(field => {
 					const { name, type = 'text' } = field;
 
-
-					const value = type === 'date' ? form[name] : form[name];
+					const value = type === 'date' ? form[name] && format(new Date(form[name]), 'yyyy-MM-dd') : form[name];
 					return (
 						<div key={name}>
 							<label htmlFor={name}>{name}</label>

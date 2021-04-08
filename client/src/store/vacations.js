@@ -12,6 +12,14 @@ const vacationsSlice = createSlice({
 		add: (state, action) => {
 			state.data.push(action.payload);
 		},
+		update: (state, { payload }) => {
+			state.data = state.data.map(vacation => {
+				if (vacation.id === payload.id) {
+					return { ...vacation, ...payload };
+				}
+				return vacation;
+			});
+		},
 		delete: (state, action) => {
 			state.data = state.data.filter(v => v.id !== action.payload);
 		},
