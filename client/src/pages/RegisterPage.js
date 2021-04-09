@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useHistory } from 'react-router-dom';
 
-
+import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
@@ -62,6 +62,13 @@ function RegisterPage() {
 		},
 	}));
 	const classes = useStyles();
+
+
+	function handleLogin() {
+		history.push('/login');
+	}
+
+
 	return (
 		<Container component="main" maxWidth="xs">
 			<Typography component="h1" variant="h5">
@@ -86,7 +93,7 @@ function RegisterPage() {
 					fullWidth
 					label="Last name"
 					type="text"
-				
+
 				/>
 				<TextField
 					name="userName"
@@ -96,7 +103,7 @@ function RegisterPage() {
 					fullWidth
 					label="User Name"
 					type="text"
-					
+
 				/>
 				<TextField
 					name="password"
@@ -107,7 +114,7 @@ function RegisterPage() {
 					label="password"
 					type="password"
 					id="password"
-				
+
 				/>
 				<Button
 					type="submit"
@@ -119,6 +126,9 @@ function RegisterPage() {
 					Register
 			</Button>
 				{!!serverError && <div className="error">{serverError}</div>}
+				<Link onClick={handleLogin} variant="body2">
+					{"Already have an account? Sign In"}
+				</Link>
 			</form>
 			<Box mt={8}>
 			</Box>

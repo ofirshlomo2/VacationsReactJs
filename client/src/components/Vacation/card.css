@@ -1,17 +1,21 @@
-.card {
-	background-color:blueviolet;
 
+
+.card {
+  margin-left: 10px;
 }
 
-#components-form-demo-normal-login .login-form {
-	max-width: 300px;
-  }
-  #components-form-demo-normal-login .login-form-forgot {
-	float: right;
-  }
-  #components-form-demo-normal-login .ant-col-rtl .login-form-forgot {
-	float: left;
-  }
-  #components-form-demo-normal-login .login-form-button {
-	width: 100%;
-  }
+.card {
+  display: block;
+  top: 0px;
+  position: relative;
+  max-width: 262px;
+  background-color: #f2f8f9;
+  border-radius: 4px;
+  padding: 32px 24px;
+  margin: 12px;
+  text-decoration: none;
+  overflow: hidden;
+  border: 1px solid #1abc9c;
+}
+
+

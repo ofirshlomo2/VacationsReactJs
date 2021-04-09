@@ -1,5 +1,6 @@
 * {
 	box-sizing: border-box;
+	
 }
 
 .registerForm {
@@ -11,28 +12,27 @@
 	grid-column: 1 / span 2;
 }
 
-
 .vacations {
+	width: 100%;
 	display: flex;
 	flex-wrap: wrap;
 }
+.header {
+	padding: 30px;
+	text-align: left;
+	background: #1abc9c;
+	color: white;
+	font-size: 30px;
+  }
 
-.card {
-	background-color: aquamarine;
+  .footer{
+	padding: 60px;
+	text-align: center;
+	background: #1abc9c;
+	color: white;
+	font-size: 30px;
+  }
 
-}
 
-#components-form-demo-normal-login .login-form {
-	max-width: 300px;
-  }
-  #components-form-demo-normal-login .login-form-forgot {
-	float: right;
-  }
-  #components-form-demo-normal-login .ant-col-rtl .login-form-forgot {
-	float: left;
-  }
-  #components-form-demo-normal-login .login-form-button {
-	width: 100%;
-  }
 
 

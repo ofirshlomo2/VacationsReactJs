@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { Actions } from '../store';
-
+import Link from '@material-ui/core/Link';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import Box from '@material-ui/core/Box';
@@ -45,6 +45,10 @@ function LoginPage() {
 		const { name, value } = event.target;
 		setForm({ ...form, [name]: value });
 	};
+
+	function handleRegister() {
+		history.push('/register');
+	}
 
 
 
@@ -105,6 +109,9 @@ function LoginPage() {
 				>
 					log In
 			</Button>
+				<Link onClick={handleRegister} variant="body2">
+					{"Don't have an account? Sign Up"}
+				</Link>
 			</form>
 
 			<Box mt={8}>

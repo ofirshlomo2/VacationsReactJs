@@ -13,17 +13,15 @@ import socketIOClient from 'socket.io-client';
 import { useSocket } from './hooks';
 
 import './App.css';
+import Header from './components/header';
+import Footer from './components/footer';
 
 function App() {
 	const dispatch = useDispatch();
-
 	const user = useSelector(Selectors.user);
-
 	const isAdmin = user?.role === 1;
 	const [loading, setLoading] = useState(true);
-
 	const history = useHistory();
-
 	const socket = useSocket();
 
 	useEffect(() => {
@@ -59,14 +57,20 @@ function App() {
 		};
 	}, [user]);
 
+	useEffect(() => {
+		async function getVacations() {
+			const res = await fetch('/api/vacations');
+			const body = await res.json();
+			dispatch(Actions.vacations.set(body));
+		}
+		getVacations();
+	}, []);
+
 	if (loading) return <div>loading....</div>;
 
 	return (
 		<div className="App">
-			<header>
-				<NavLink to="/">Home</NavLink>
-				{isAdmin && <NavLink to="/reports">Reports</NavLink>}
-			</header>
+			< Header props={user, isAdmin} />
 			<main>
 				<Switch>
 					<Route exact path="/">
@@ -89,6 +93,7 @@ function App() {
 					</Route>
 				</Switch>
 			</main>
+			<Footer />
 		</div>
 	);
 }
