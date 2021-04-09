@@ -9,6 +9,8 @@ import Box from '@material-ui/core/Box';
 import Typography from '@material-ui/core/Typography';
 import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
+import './login.css';
+
 
 
 
@@ -72,51 +74,54 @@ function LoginPage() {
 		},
 	}));
 
+
 	const classes = useStyles();
 	return (
-		<Container component="main" maxWidth="xs">
-			<Typography component="h1" variant="h5">
-				Log In
+		<div className="login">
+			<Container component="main" maxWidth="xs" >
+				<Typography component="h1" variant="h5">
+					Log In
 		  </Typography>
-			<form className={classes.form} onChange={onChange} onSubmit={onSubmit}>
-				<TextField
-					name="userName"
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					id="userName"
-					label="user name"
-					autoFocus
-				/>
-				<TextField
-					name="password"
-					variant="outlined"
-					margin="normal"
-					required
-					fullWidth
-					label="Password"
-					type="password"
-					id="password"
-					autoComplete="current-password"
-				/>
-				<Button
-					type="submit"
-					fullWidth
-					variant="contained"
-					color="primary"
-					className={classes.submit}
-				>
-					log In
+				<form className={classes.form} onChange={onChange} onSubmit={onSubmit}>
+					<TextField
+						name="userName"
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						id="userName"
+						label="user name"
+						autoFocus
+					/>
+					<TextField
+						name="password"
+						variant="outlined"
+						margin="normal"
+						required
+						fullWidth
+						label="Password"
+						type="password"
+						id="password"
+						autoComplete="current-password"
+					/>
+					<Button
+						type="submit"
+						fullWidth
+						variant="contained"
+						color="primary"
+						className={classes.submit}
+					>
+						log In
 			</Button>
-				<Link onClick={handleRegister} variant="body2">
-					{"Don't have an account? Sign Up"}
-				</Link>
-			</form>
+					<Link onClick={handleRegister} variant="body2">
+						{"Don't have an account? Sign Up"}
+					</Link>
+				</form>
 
-			<Box mt={8}>
-			</Box>
-		</Container>
+				<Box mt={8}>
+				</Box>
+			</Container>
+		</div>
 	);
 
 };

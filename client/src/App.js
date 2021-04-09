@@ -35,7 +35,6 @@ function App() {
 			setLoading(false);
 		}
 		getUser();
-
 		// coonect to ws
 		// const socket = socketIOClient('http://localhost:5000');
 	}, []);
@@ -57,6 +56,8 @@ function App() {
 		};
 	}, [user]);
 
+
+
 	useEffect(() => {
 		async function getVacations() {
 			const res = await fetch('/api/vacations');
@@ -66,7 +67,11 @@ function App() {
 		getVacations();
 	}, []);
 
-	if (loading) return <div>loading....</div>;
+
+
+	if (loading) return <div className="loader">loading....</div>;
+
+
 
 	return (
 		<div className="App">
