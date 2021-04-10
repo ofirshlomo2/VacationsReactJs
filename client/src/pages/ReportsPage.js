@@ -1,8 +1,6 @@
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useState } from 'react';
 import vacationsSlice from '../store/vacations';
 import { useSelector } from 'react-redux';
-
-
 
 import {
 	Chart,
@@ -61,46 +59,52 @@ const vacationsData = useSelector(state => vacations.data)
 const data = { datasets: [] }
 */
 
-
-const data = {
-	labels: [1, 2, 3],
-	datasets: [
-		{
-			label: 'Followeres Dhashboard',
-			data: [65, 59, 80, 81, 56, 55, 40],
-			backgroundColor: [
-				'rgba(255, 99, 132, 0.2)',
-				'rgba(255, 159, 64, 0.2)',
-				'rgba(255, 205, 86, 0.2)',
-				'rgba(75, 192, 192, 0.2)',
-				'rgba(54, 162, 235, 0.2)',
-				'rgba(153, 102, 255, 0.2)',
-				'rgba(201, 203, 207, 0.2)',
-			],
-			borderColor: [
-				'rgb(255, 99, 132)',
-				'rgb(255, 159, 64)',
-				'rgb(255, 205, 86)',
-				'rgb(75, 192, 192)',
-				'rgb(54, 162, 235)',
-				'rgb(153, 102, 255)',
-				'rgb(201, 203, 207)',
-			],
-			borderWidth: 1,
-		},
-	],
-};
-
 export default () => {
-
-
 	const canvasRef = useRef(null);
+
+	const [data, setData] = useState([]);
+
+	useEffect(() => {
+		async function getVacations() {
+			const res = await fetch('/api/vacations/reports');
+			const body = await res.json();
+			setData(body);
+		}
+		getVacations();
+	}, []);
 
 	useEffect(() => {
 		var ctx = canvasRef.current.getContext('2d');
 		var myChart = new Chart(ctx, {
 			type: 'bar',
-			data: data,
+			data: {
+				labels: data.map(v => v.destination),
+				datasets: [
+					{
+						label: 'Followeres Dhashboard',
+						data: data.map(v => v.count),
+						backgroundColor: [
+							'rgba(255, 99, 132, 0.2)',
+							'rgba(255, 159, 64, 0.2)',
+							'rgba(255, 205, 86, 0.2)',
+							'rgba(75, 192, 192, 0.2)',
+							'rgba(54, 162, 235, 0.2)',
+							'rgba(153, 102, 255, 0.2)',
+							'rgba(201, 203, 207, 0.2)',
+						],
+						borderColor: [
+							'rgb(255, 99, 132)',
+							'rgb(255, 159, 64)',
+							'rgb(255, 205, 86)',
+							'rgb(75, 192, 192)',
+							'rgb(54, 162, 235)',
+							'rgb(153, 102, 255)',
+							'rgb(201, 203, 207)',
+						],
+						borderWidth: 1,
+					},
+				],
+			},
 			options: {
 				scales: {
 					y: {
@@ -109,14 +113,15 @@ export default () => {
 				},
 			},
 		});
-	}, []);
+		return () => myChart.destroy();
+	}, [data]);
 
 	return (
 		<div className="reportPage">
 			<button>HomePage</button>
-			<div style={{ width: "300", height: "300" }}>
+			<div style={{ width: '300', height: '300' }}>
 				<canvas ref={canvasRef} width="100" height="100"></canvas>
 			</div>
-		</div >
+		</div>
 	);
 };

@@ -31,7 +31,7 @@ function VacationList(props) {
 		console.log('toggleFollow', vacationId);
 		const isFollow = !!vacations.find(v => v.id === vacationId).isFollow;
 		if (isFollow) {
-			const res = await fetch('/api/vacations/follow', {
+			const res = await fetch(`/api/vacations/follow/${vacationId}`, {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',
