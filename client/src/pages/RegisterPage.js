@@ -93,7 +93,6 @@ function RegisterPage() {
 					fullWidth
 					label="Last name"
 					type="text"
-
 				/>
 				<TextField
 					name="userName"
@@ -139,19 +138,3 @@ function RegisterPage() {
 export default RegisterPage;
 
 
-/*
-<div className="App">
-<form className="registerForm" onChange={onChange} onSubmit={onSubmit}>
-	<label htmlFor="firstName">firstName</label>
-	<input type="text" name="firstName" />
-	<label htmlFor="lastName">lastName</label>
-	<input type="text" name="lastName" />
-	<label htmlFor="userName">userName</label>
-	<input type="text" name="userName" />
-	<label htmlFor="password">password</label>
-	<input type="password" name="password" />
-	<button>regiser</button>
-	{!!serverError && <div className="error">{serverError}</div>}
-</form>
-</div>
-*/

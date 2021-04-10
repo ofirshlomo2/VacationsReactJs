@@ -13,6 +13,8 @@ import Typography from '@material-ui/core/Typography';
 import { red } from '@material-ui/core/colors';
 
 
+
+
 // [<SettingOutlined key="setting" />, <EditOutlined key="edit" />, <EllipsisOutlined key="ellipsis" />]
 
 const { Meta } = Card;
@@ -65,8 +67,9 @@ function Vacation(props) {
 				/>
 				<CardContent>
 					<Typography>
-						<p>price: {vacation.price}</p>
-						<p>end: {format(new Date(vacation.endDate), 'MM/dd/yyyy')}</p>
+						<p>Price: {vacation.price}$</p>
+						<p>Description: {vacation.description}</p>
+						<p>End: {format(new Date(vacation.endDate), 'MM/dd/yyyy')}</p>
 					</Typography>
 				</CardContent>
 				<CardActions >

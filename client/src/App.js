@@ -11,7 +11,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import socketIOClient from 'socket.io-client';
 
 import { useSocket } from './hooks';
-
 import './App.css';
 import Header from './components/header';
 import Footer from './components/footer';

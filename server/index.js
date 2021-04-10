@@ -71,7 +71,6 @@ app.post('/api/register', async (req, res) => {
 			//  Duplicate entry key 'users.userName
 			return res.status(400).json({ message: 'this user name is exists' });
 		}
-
 		res.status(500).json({ message: 'Server error', error });
 	}
 });

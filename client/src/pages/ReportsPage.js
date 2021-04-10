@@ -1,4 +1,8 @@
 import { useRef, useEffect } from 'react';
+import vacationsSlice from '../store/vacations';
+import { useSelector } from 'react-redux';
+
+
 
 import {
 	Chart,
@@ -52,12 +56,17 @@ Chart.register(
 	Title,
 	Tooltip
 );
+/*
+const vacationsData = useSelector(state => vacations.data)
+const data = { datasets: [] }
+*/
+
 
 const data = {
 	labels: [1, 2, 3],
 	datasets: [
 		{
-			label: 'My First Dataset',
+			label: 'Followeres Dhashboard',
 			data: [65, 59, 80, 81, 56, 55, 40],
 			backgroundColor: [
 				'rgba(255, 99, 132, 0.2)',
@@ -83,6 +92,8 @@ const data = {
 };
 
 export default () => {
+
+
 	const canvasRef = useRef(null);
 
 	useEffect(() => {
@@ -101,8 +112,11 @@ export default () => {
 	}, []);
 
 	return (
-		<div>
-			<canvas ref={canvasRef} width="400" height="400"></canvas>
-		</div>
+		<div className="reportPage">
+			<button>HomePage</button>
+			<div style={{ width: "300", height: "300" }}>
+				<canvas ref={canvasRef} width="100" height="100"></canvas>
+			</div>
+		</div >
 	);
 };

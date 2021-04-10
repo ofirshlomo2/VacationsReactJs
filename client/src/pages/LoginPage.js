@@ -76,6 +76,7 @@ function LoginPage() {
 
 
 	const classes = useStyles();
+	
 	return (
 		<div className="login">
 			<Container component="main" maxWidth="xs" >

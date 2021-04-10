@@ -42,6 +42,8 @@ function HomePage() {
 					<Button variant="contained" color="secondary" onClick={onOpenModal}>
 						Add Vacation
       </Button>
+					<Button variant="contained" color="primary"> Reports</Button>
+					<Button variant="contained" color="primary"> Log Out</Button>
 				</div>
 			)}
 			<VacationList user={user} vacations={vacations} />
