@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useHistory } from 'react-router-dom';
+import { useHistory, Link } from 'react-router-dom';
 import { Actions, Selectors } from '../store';
 import { Vacation, VacationList, VacationModal } from '../components/';
 
@@ -14,8 +14,6 @@ function HomePage() {
 	const onOpenModal = () => dispatch(Actions.vacationModal.open());
 	const dispatch = useDispatch();
 
-
-
 	useEffect(() => {
 		async function getVacations() {
 			const res = await fetch('/api/vacations');
@@ -25,7 +23,7 @@ function HomePage() {
 		getVacations();
 	}, []);
 
-	const useStyles = makeStyles((theme) => ({
+	const useStyles = makeStyles(theme => ({
 		root: {
 			'& > *': {
 				margin: theme.spacing(1),
@@ -41,9 +39,16 @@ function HomePage() {
 				<div>
 					<Button variant="contained" color="secondary" onClick={onOpenModal}>
 						Add Vacation
-      </Button>
-					<Button variant="contained" color="primary"> Reports</Button>
-					<Button variant="contained" color="primary"> Log Out</Button>
+					</Button>
+					<Link to="/reports">
+						<Button variant="contained" color="primary">
+							Reports
+						</Button>
+					</Link>
+					<Button variant="contained" color="primary">
+						{' '}
+						Log Out
+					</Button>
 				</div>
 			)}
 			<VacationList user={user} vacations={vacations} />
