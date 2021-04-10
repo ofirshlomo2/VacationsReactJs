@@ -3,10 +3,7 @@ const { isAdmin } = require('../middleware');
 const multer = require('multer');
 const upload = multer({ dest: 'public/images/', preservePath: true });
 
-
-
-
-
+const controller = require('../controller');
 
 // delete vacations
 router.delete('/:id', async (req, res) => {
@@ -21,34 +18,52 @@ router.delete('/:id', async (req, res) => {
 		global.socket.emit('VACATION_DELETE', { id: +id });
 		console.log(`vacation ${id} was deleted`);
 	} catch (error) {
-		console.log('delete vacation err', error.message);
+		console.log('delete vacation err:', error.message);
 		res.status(500).json({ message: 'Server error' });
 	}
 });
 
-
-
-
-router.get('/', async (req, res) => {
+// remove folow
+router.delete('/follow/:id', async (req, res) => {
 	try {
-		const query = `SELECT 
-		v.description, v.price, v.destination, 
-		v.startDate, v.endDate, v.id, v.image,
-		f.userId as isFollow
-		FROM Vacations As v
-		LEFT JOIN Followers As f
-		ON v.id = f.vacationId;
-		;`;
-		// query databa
-		const [vacations] = await global.connection.execute(query);
-		res.json(vacations);
+		const { id } = req.params;
+
+		const query = `
+			DELETE FROM Followers 
+			WHERE userId=${req.user.id} AND
+			vacationId=${+id}
+		`;
+
+		const [result] = await global.connection.execute(query);
+
+		console.log(`user ${req.user.id} unfollow vacation ${id}`);
+		res.json({ id: result });
 	} catch (error) {
-		console.log('login err', error.message);
+		console.log('delete follow folow err', error.message);
 		res.status(500).json({ message: 'Server error' });
 	}
 });
 
+// reports
+router.get('/reports', async (req, res) => {
+	try {
+		const query = `
+			SELECT COUNT(userID)as count, destination, vacationId
+			FROM Vacations, Followers
+			WHERE Vacations.id = Followers.vacationId
+			GROUP BY Vacations.destination
+			
+		`;
+		// query databa
+		const [result] = await global.connection.execute(query);
+		res.json(result);
+	} catch (error) {
+		console.log('get reports vacation err', error.message);
+		res.status(500).json({ message: 'Server error' });
+	}
+});
 
+router.get('/', controller.vacations.getVacations);
 
 // update
 router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
@@ -77,27 +92,7 @@ router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
 	}
 });
 
-
-
 // create
-router.post('/', isAdmin, upload.single('image'), async (req, res) => {
-	try {
-		const { body, file } = req;
-		console.log('body', body);
-		console.log('file', file);
-		const image = `/images/${file.filename}`;
-		const { description, price, destination, startDate, endDate } = req.body;
-		const query = `
-			INSERT INTO Vacations (description, price, destination, startDate, endDate, image) 
-			VALUES ('${description}', ${price}, '${destination}', '${startDate}', '${endDate}', '${image}')
-		`;
-		const [result] = await global.connection.execute(query);
-		res.json({ id: result.insertId, description, price, destination, startDate, endDate, image });
-	} catch (error) {
-		console.log('login err', error.message);
-		res.status(500).json({ message: 'Server error' });
-	}
-});
-
+router.post('/', isAdmin, upload.single('image'), controller.vacations.create);
 
 module.exports = router;

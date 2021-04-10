@@ -16,6 +16,8 @@ app.use(cookieParser()); // parser cookie -> req.cookies
 const routes = require('./routes');
 app.use('/api/vacations', hasToken, routes.vacation);
 const server = http.createServer(app); // http routing
+
+const controller = require('./controller');
 // create websocket instance
 const io = socketIO(server, {
 	cors: {
@@ -37,44 +39,7 @@ global.socket = io;
 // serverStatus: 2
 // warningStatus: 0
 
-function validateRegister(body) {
-	const { firstName, lastName, userName, password } = body;
-	if (!firstName) return 'firstName is required';
-	if (!lastName) return 'lastName is required';
-	if (!userName) return 'userName is required';
-	if (!password) return 'password is required';
-
-	return null;
-}
-app.post('/api/register', async (req, res) => {
-	try {
-		const errorMessage = validateRegister(req.body);
-
-		if (errorMessage) {
-			return res.status(400).json({ message: errorMessage });
-		}
-		const { firstName, lastName, userName, password } = req.body;
-
-		const query = `
-			INSERT INTO Users (firstName, lastName, userName, password, role) 
-			VALUES ('${firstName}', '${lastName}', '${userName}', '${password}', 0)
-		
-		`;
-
-		// query databa
-		const [result] = await global.connection.execute(query);
-
-		res.json({ id: result.insertId });
-	} catch (error) {
-		console.log('login err', error.message);
-		if (error.errno === 1062) {
-			//  Duplicate entry key 'users.userName
-			return res.status(400).json({ message: 'this user name is exists' });
-		}
-		res.status(500).json({ message: 'Server error', error });
-	}
-});
-
+app.post('/api/register', controller.auth.register);
 // add folow
 app.post('/api/vacations/follow', hasToken, async (req, res) => {
 	try {
@@ -89,30 +54,6 @@ app.post('/api/vacations/follow', hasToken, async (req, res) => {
 
 		console.log(`user ${req.user.id} follow vacation ${vacationId}`);
 		res.json({ id: result.insertId });
-	} catch (error) {
-		console.log('add folow err', error.message);
-		res.status(500).json({ message: 'Server error' });
-	}
-});
-
-
-
-
-// remove folow
-app.delete('/api/vacations/follow', hasToken, async (req, res) => {
-	try {
-		const { vacationId } = req.body;
-
-		const query = `
-			DELETE FROM Followers 
-			WHERE userId=${req.user.id} AND
-			vacationId=${vacationId}
-		`;
-
-		const [result] = await global.connection.execute(query);
-
-		console.log(`user ${req.user.id} unfollow vacation ${vacationId}`);
-		res.json({ id: result });
 	} catch (error) {
 		console.log('add folow err', error.message);
 		res.status(500).json({ message: 'Server error' });
@@ -134,10 +75,6 @@ app.get('/api/auth/current', hasToken, async (req, res) => {
 		res.status(500).json({ message: 'Server error', error });
 	}
 });
-
-
-
-
 
 app.post('/api/login', async (req, res) => {
 	try {
@@ -172,7 +109,7 @@ server.listen(5000, async () => {
 		database: 'vacationdb',
 		host: 'localhost',
 		user: 'root',
-		password: 'ofirshlomo', //123qwe!!
+		password: '123qwe!!', //123qwe!!
 	});
 	global.connection = connection;
 	console.log('server work 5000');
