@@ -1,27 +1,3 @@
-// const mysql2Promise = require("mysql2/promise")
-// const { DB_SCHEMA, DB_USER, DB_PASSWORD, DB_PORT, DB_HOST } = process.env;
-// console.log(DB_SCHEMA, DB_USER, DB_PASSWORD, DB_PORT, DB_HOST)
-
-// async function getConnection() {
-//     try {
-//         const connection = await mysql2Promise.createPool({
-//             host: DB_HOST,
-//             port: DB_PORT,
-//             user: DB_USER,
-//             password: DB_PASSWORD,
-//             multipleStatements: false,
-//             database: DB_SCHEMA,
-//             connectionLimit: 10
-//         });
-//         return connection;
-//     } catch (ex) {
-//         console.log("Failed connect to DB")
-//         console.log(ex.message)
-//     }
-
-// }
-
-// module.exports = getConnection
 
 module.exports = {
 	vacations: {
@@ -38,15 +14,34 @@ module.exports = {
 			const [vacations] = await global.connection.execute(query);
 			return vacations;
 		},
-		addVacation: async ({description, price, destination, startDate, endDate, image}) => {
+
+		addVacation: async ({ description, price, destination, startDate, endDate, image }) => {
 			const query = `
                INSERT INTO Vacations (description, price, destination, startDate, endDate, image) 
                VALUES ('${description}', ${price}, '${destination}', '${startDate}', '${endDate}', '${image}')
             `;
 			const [result] = await global.connection.execute(query);
-            return result;
+			return result;
 		},
 	},
+
 	user: {},
-	auth: {},
+
+	auth: {
+		LoginFanction: async ({ userName, password }) => {
+			const query = `SELECT * FROM Users WHERE userName='${userName}' AND password='${password}'`;
+			const [rows] = await global.connection.execute(query);
+			console.log(rows)
+			return rows;
+		},
+		currenUser: async id => {
+			const query = `SELECT * FROM Users WHERE id='${id}'`;
+			const [result] = await global.connection.execute(query);
+			return result;
+
+		},
+
+	}
+
+
 };

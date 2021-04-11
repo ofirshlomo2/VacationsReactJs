@@ -17,14 +17,9 @@ import './login.css';
 function LoginPage() {
 
 	const [form, setForm] = useState({});
-
 	// hook get store.dispatch method
 	const dispatch = useDispatch();
 	const history = useHistory();
-
-
-
-
 
 	const onSubmit = async event => {
 		event.preventDefault();
@@ -42,12 +37,10 @@ function LoginPage() {
 		dispatch(Actions.user.set(body));
 		history.push('/');
 	};
-
 	const onChange = event => {
 		const { name, value } = event.target;
 		setForm({ ...form, [name]: value });
 	};
-
 	function handleRegister() {
 		history.push('/register');
 	}

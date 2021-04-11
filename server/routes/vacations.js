@@ -3,7 +3,18 @@ const { isAdmin } = require('../middleware');
 const multer = require('multer');
 const upload = multer({ dest: 'public/images/', preservePath: true });
 
+
+
+
 const controller = require('../controller');
+//// contorollers /////
+// create vacation 
+router.post('/', isAdmin, upload.single('image'), controller.vacations.create);
+//get all vacations
+router.get('/', controller.vacations.getVacations);
+
+
+
 
 // delete vacations
 router.delete('/:id', async (req, res) => {
@@ -27,15 +38,12 @@ router.delete('/:id', async (req, res) => {
 router.delete('/follow/:id', async (req, res) => {
 	try {
 		const { id } = req.params;
-
 		const query = `
 			DELETE FROM Followers 
 			WHERE userId=${req.user.id} AND
 			vacationId=${+id}
 		`;
-
 		const [result] = await global.connection.execute(query);
-
 		console.log(`user ${req.user.id} unfollow vacation ${id}`);
 		res.json({ id: result });
 	} catch (error) {
@@ -48,11 +56,14 @@ router.delete('/follow/:id', async (req, res) => {
 router.get('/reports', async (req, res) => {
 	try {
 		const query = `
-			SELECT COUNT(userID)as count, destination, vacationId
-			FROM Vacations, Followers
-			WHERE Vacations.id = Followers.vacationId
-			GROUP BY Vacations.destination
-			
+		SELECT 
+		COUNT(userId) AS count
+	    FROM
+		vacations,
+		Followers
+	    WHERE
+		vacations.id = followers.vacationId
+	    GROUP BY vacations.destination		
 		`;
 		// query databa
 		const [result] = await global.connection.execute(query);
@@ -63,7 +74,7 @@ router.get('/reports', async (req, res) => {
 	}
 });
 
-router.get('/', controller.vacations.getVacations);
+
 
 // update
 router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
@@ -92,7 +103,7 @@ router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
 	}
 });
 
-// create
-router.post('/', isAdmin, upload.single('image'), controller.vacations.create);
+
+
 
 module.exports = router;

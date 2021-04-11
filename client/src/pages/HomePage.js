@@ -13,6 +13,7 @@ function HomePage() {
 	const vacations = useSelector(Selectors.vacations);
 	const onOpenModal = () => dispatch(Actions.vacationModal.open());
 	const dispatch = useDispatch();
+	const history = useHistory()
 
 	useEffect(() => {
 		async function getVacations() {
@@ -31,6 +32,11 @@ function HomePage() {
 		},
 	}));
 
+	function logOutFanction() {
+		window.localStorage.clear();
+		history.push("/api/login");
+	}
+
 	const classes = useStyles();
 	return (
 		<div className="Home">
@@ -46,7 +52,7 @@ function HomePage() {
 						</Button>
 					</Link>
 					<Button variant="contained" color="primary">
-						{' '}
+						{logOutFanction}
 						Log Out
 					</Button>
 				</div>
