@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
-import vacationsSlice from '../store/vacations';
-import { useSelector } from 'react-redux';
+
 
 import {
 	Chart,
@@ -54,26 +53,26 @@ Chart.register(
 	Title,
 	Tooltip
 );
-/*
-const vacationsData = useSelector(state => vacations.data)
-const data = { datasets: [] }
-*/
 
 export default () => {
 	const canvasRef = useRef(null);
-
 	const [data, setData] = useState([]);
+
 
 	useEffect(() => {
 		async function getVacations() {
-			const res = await fetch('/api/vacations/reports');
+			const res = await fetch('/reports');
 			const body = await res.json();
 			setData(body);
 		}
 		getVacations();
 	}, []);
 
+
+
+
 	useEffect(() => {
+		console.log(data)
 		var ctx = canvasRef.current.getContext('2d');
 		var myChart = new Chart(ctx, {
 			type: 'bar',
@@ -119,7 +118,7 @@ export default () => {
 	return (
 		<div className="reportPage">
 			<button>HomePage</button>
-			<div style={{ width: '300', height: '300' }}>
+			<div>
 				<canvas ref={canvasRef} width="100" height="100"></canvas>
 			</div>
 		</div>

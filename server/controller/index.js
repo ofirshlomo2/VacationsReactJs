@@ -14,12 +14,9 @@ module.exports = {
 		create: async (req, res) => {
 			try {
 				const { body, file } = req;
-
 				const image = `/images/${file.filename}`;
 				const { description, price, destination, startDate, endDate } = req.body;
-
-				const result = await database.vacations.create({ description, price, destination, startDate, endDate });
-
+				const result = await database.vacations.addVacation({ description, price, destination, startDate, endDate, image });
 				res.json({ id: result.insertId, description, price, destination, startDate, endDate, image });
 			} catch (error) {
 				console.log('login err', error.message);
@@ -29,25 +26,20 @@ module.exports = {
 	},
 
 	auth: {
-		login: async (req, res) => {},
+		login: async (req, res) => { },
 		register: async (req, res) => {
 			try {
 				const errorMessage = validateRegister(req.body);
-
 				if (errorMessage) {
 					return res.status(400).json({ message: errorMessage });
 				}
 				const { firstName, lastName, userName, password } = req.body;
-
 				const query = `
                INSERT INTO Users (firstName, lastName, userName, password, role) 
                VALUES ('${firstName}', '${lastName}', '${userName}', '${password}', 0)
-            
             `;
-
 				// query databa
 				const [result] = await global.connection.execute(query);
-
 				res.json({ id: result.insertId });
 			} catch (error) {
 				console.log('login err', error.message);
@@ -58,7 +50,7 @@ module.exports = {
 				res.status(500).json({ message: 'Server error', error });
 			}
 		},
-		current: async (req, res) => {},
+		current: async (req, res) => { },
 	},
 };
 

@@ -3,7 +3,17 @@ const { isAdmin } = require('../middleware');
 const multer = require('multer');
 const upload = multer({ dest: 'public/images/', preservePath: true });
 
+
+
 const controller = require('../controller');
+//getAllVacations
+router.get('/', controller.vacations.getVacations);
+
+// create
+router.post('/', isAdmin, upload.single('image'), controller.vacations.create);
+
+
+
 
 // delete vacations
 router.delete('/:id', async (req, res) => {
@@ -23,19 +33,16 @@ router.delete('/:id', async (req, res) => {
 	}
 });
 
-// remove folow
+// remove follow from vacations
 router.delete('/follow/:id', async (req, res) => {
 	try {
 		const { id } = req.params;
-
 		const query = `
 			DELETE FROM Followers 
 			WHERE userId=${req.user.id} AND
 			vacationId=${+id}
 		`;
-
 		const [result] = await global.connection.execute(query);
-
 		console.log(`user ${req.user.id} unfollow vacation ${id}`);
 		res.json({ id: result });
 	} catch (error) {
@@ -44,18 +51,19 @@ router.delete('/follow/:id', async (req, res) => {
 	}
 });
 
+
 // reports
 router.get('/reports', async (req, res) => {
 	try {
 		const query = `
-			SELECT COUNT(userID)as count, destination, vacationId
-			FROM Vacations, Followers
-			WHERE Vacations.id = Followers.vacationId
-			GROUP BY Vacations.destination
-			
+			SELECT COUNT(userId)as count, destination, vacationId
+			FROM vacations, followers
+			WHERE vacations.id = followers.vacationId
+			GROUP BY vacations.destination
 		`;
 		// query databa
 		const [result] = await global.connection.execute(query);
+		console.log(result)
 		res.json(result);
 	} catch (error) {
 		console.log('get reports vacation err', error.message);
@@ -63,9 +71,9 @@ router.get('/reports', async (req, res) => {
 	}
 });
 
-router.get('/', controller.vacations.getVacations);
 
-// update
+
+// update vacation details 
 router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
 	try {
 		const { body, file } = req;
@@ -92,7 +100,5 @@ router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
 	}
 });
 
-// create
-router.post('/', isAdmin, upload.single('image'), controller.vacations.create);
 
 module.exports = router;

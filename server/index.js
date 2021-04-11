@@ -41,17 +41,16 @@ global.socket = io;
 
 app.post('/api/register', controller.auth.register);
 // add folow
+
+
 app.post('/api/vacations/follow', hasToken, async (req, res) => {
 	try {
 		const { vacationId } = req.body;
-
 		const query = `
 			INSERT INTO Followers (userId, vacationId) 
 			VALUES (${req.user.id}, ${vacationId})
 		`;
-
 		const [result] = await global.connection.execute(query);
-
 		console.log(`user ${req.user.id} follow vacation ${vacationId}`);
 		res.json({ id: result.insertId });
 	} catch (error) {
@@ -60,15 +59,15 @@ app.post('/api/vacations/follow', hasToken, async (req, res) => {
 	}
 });
 
+
+
+///current user
 app.get('/api/auth/current', hasToken, async (req, res) => {
 	try {
 		console.log('user', req.user);
-
 		const query = `SELECT * FROM Users WHERE id='${req.user.id}'`;
-
 		// query databa
 		const [result] = await global.connection.execute(query);
-
 		res.json(result[0]);
 	} catch (error) {
 		console.log('/api/auth/current err', error.message);
@@ -76,26 +75,23 @@ app.get('/api/auth/current', hasToken, async (req, res) => {
 	}
 });
 
+
+
+//login
 app.post('/api/login', async (req, res) => {
 	try {
 		const { userName, password } = req.body;
-
 		console.log('login:', userName, password);
-
 		const query = `SELECT * FROM Users WHERE userName='${userName}' AND password='${password}'`;
-
 		// query databa
 		const [rows] = await global.connection.execute(query);
 		console.log('rows', rows);
 		const user = rows[0];
-
 		if (!user) {
 			return res.status(400).json({ message: 'user name or password not valid' });
 		}
 		delete user.password;
-
 		const token = await JWT.sign({ id: user.id, role: user.role });
-
 		res.cookie('token', token);
 		res.json(user);
 	} catch (error) {
@@ -104,12 +100,15 @@ app.post('/api/login', async (req, res) => {
 	}
 });
 
+
+
+
 server.listen(5000, async () => {
 	const connection = await mysql.createConnection({
 		database: 'vacationdb',
 		host: 'localhost',
 		user: 'root',
-		password: '123qwe!!', //123qwe!!
+		password: 'ofirshlomo', //123qwe!!
 	});
 	global.connection = connection;
 	console.log('server work 5000');
@@ -136,25 +135,20 @@ const JWT = {
 	},
 };
 
+
+
+
 async function hasToken(req, res, next) {
 	try {
 		const userToken = req.cookies.token;
-
 		if (!userToken) {
 			return res.status(401).json({ message: 'not authoticated' });
 		}
-
 		const decoded = await JWT.verify(userToken);
-
 		req.user = decoded;
 		next(); // call next middleware
 	} catch (error) {
 		console.log('hasToken error:', error.message);
 		return res.status(401).json({ message: 'not authoticated' });
 	}
-}
-
-function isAdmin(req, res, next) {
-	if (req.user.role !== 1) return res.status(403).json({ message: 'not autorirezed' });
-	next(); // call next middleware
 }
