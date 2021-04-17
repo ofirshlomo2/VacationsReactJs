@@ -69,7 +69,7 @@ function VacationList(props) {
 					<EditIcon onClick={() => dispatch(Actions.vacationModal.open({ vacation, isEdit: true }))}> </EditIcon>
 					]
 					: [
-						<FavoriteIcon onClick={() => toggleFollow(vacation.id)}>{isFollow ? 'UnFollow' : 'Follow'}</FavoriteIcon>
+						<span onClick={() => toggleFollow(vacation.id)}>{isFollow ? 'UnFollow' : 'Follow'}</span>
 					];
 				return <Vacation key={vacation.id} vacation={vacation} actions={actions} />;
 			})}

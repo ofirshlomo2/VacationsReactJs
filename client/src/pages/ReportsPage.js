@@ -55,6 +55,11 @@ Chart.register(
 	Tooltip
 );
 
+
+
+
+
+
 export default () => {
 	const canvasRef = useRef(null);
 	const [data, setData] = useState([]);
@@ -62,7 +67,7 @@ export default () => {
 
 	useEffect(() => {
 		async function getVacations() {
-			const res = await fetch('/reports');
+			const res = await fetch('/api/vacations/reports');
 			const body = await res.json();
 			setData(body);
 		}
@@ -71,9 +76,10 @@ export default () => {
 
 
 
-	console.log(data)
+
+
 	useEffect(() => {
-		
+		console.log(data)
 		var ctx = canvasRef.current.getContext('2d');
 		var myChart = new Chart(ctx, {
 			type: 'bar',
