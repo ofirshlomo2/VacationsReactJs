@@ -1,5 +1,6 @@
 import { useRef, useEffect, useState } from 'react';
-
+import Button from '@material-ui/core/Button';
+import { Link } from 'react-router-dom';
 
 import {
 	Chart,
@@ -70,9 +71,9 @@ export default () => {
 
 
 
-
+	console.log(data)
 	useEffect(() => {
-		console.log(data)
+		
 		var ctx = canvasRef.current.getContext('2d');
 		var myChart = new Chart(ctx, {
 			type: 'bar',
@@ -117,7 +118,11 @@ export default () => {
 
 	return (
 		<div className="reportPage">
-			<button>HomePage</button>
+			<Link to="/">
+				<Button variant="contained" color="primary">
+					Home Page
+						</Button>
+			</Link>
 			<div>
 				<canvas ref={canvasRef} width="100" height="100"></canvas>
 			</div>
