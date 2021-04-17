@@ -11,19 +11,16 @@ import Container from '@material-ui/core/Container';
 
 const field = ['firstName', 'lastName', 'userName', 'password'];
 
-
 function RegisterPage() {
 	const [form, setForm] = useState({});
 	const [serverError, setServerError] = useState('');
 	const history = useHistory();
 
-
-
 	const onSubmit = async event => {
 		try {
 			event.preventDefault();
 			// todo: validate
-			const res = await fetch('/api/register', {
+			const res = await fetch('/api/auth/register', {
 				headers: { 'Content-Type': 'application/json' },
 				method: 'POST',
 				body: JSON.stringify(form),
@@ -34,15 +31,14 @@ function RegisterPage() {
 				return setServerError(body.message);
 			}
 			history.push('/login');
-
-		} catch (err) { }
+		} catch (err) {}
 	};
 	const onChange = event => {
 		const { name, value } = event.target;
 		setForm({ ...form, [name]: value });
 	};
 
-	const useStyles = makeStyles((theme) => ({
+	const useStyles = makeStyles(theme => ({
 		paper: {
 			marginTop: theme.spacing(8),
 			display: 'flex',
@@ -63,17 +59,15 @@ function RegisterPage() {
 	}));
 	const classes = useStyles();
 
-
 	function handleLogin() {
 		history.push('/login');
 	}
-
 
 	return (
 		<Container component="main" maxWidth="xs">
 			<Typography component="h1" variant="h5">
 				Register
-		  </Typography>
+			</Typography>
 			<form className={classes.form} onChange={onChange} onSubmit={onSubmit}>
 				<TextField
 					name="firstName"
@@ -102,7 +96,6 @@ function RegisterPage() {
 					fullWidth
 					label="User Name"
 					type="text"
-
 				/>
 				<TextField
 					name="password"
@@ -113,28 +106,18 @@ function RegisterPage() {
 					label="password"
 					type="password"
 					id="password"
-
 				/>
-				<Button
-					type="submit"
-					fullWidth
-					variant="contained"
-					color="primary"
-					className={classes.submit}
-				>
+				<Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
 					Register
-			</Button>
+				</Button>
 				{!!serverError && <div className="error">{serverError}</div>}
 				<Link onClick={handleLogin} variant="body2">
-					{"Already have an account? Sign In"}
+					{'Already have an account? Sign In'}
 				</Link>
 			</form>
-			<Box mt={8}>
-			</Box>
+			<Box mt={8}></Box>
 		</Container>
 	);
 }
 
 export default RegisterPage;
-
-

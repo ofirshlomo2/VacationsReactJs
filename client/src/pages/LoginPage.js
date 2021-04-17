@@ -11,24 +11,16 @@ import { makeStyles } from '@material-ui/core/styles';
 import Container from '@material-ui/core/Container';
 import './login.css';
 
-
-
-
 function LoginPage() {
-
 	const [form, setForm] = useState({});
 
 	// hook get store.dispatch method
 	const dispatch = useDispatch();
 	const history = useHistory();
 
-
-
-
-
 	const onSubmit = async event => {
 		event.preventDefault();
-		const res = await fetch('/api/login', {
+		const res = await fetch('/api/auth/login', {
 			headers: { 'Content-Type': 'application/json' },
 			method: 'POST',
 			body: JSON.stringify(form),
@@ -52,9 +44,7 @@ function LoginPage() {
 		history.push('/register');
 	}
 
-
-
-	const useStyles = makeStyles((theme) => ({
+	const useStyles = makeStyles(theme => ({
 		paper: {
 			marginTop: theme.spacing(8),
 			display: 'flex',
@@ -74,15 +64,14 @@ function LoginPage() {
 		},
 	}));
 
-
 	const classes = useStyles();
-	
+
 	return (
 		<div className="login">
-			<Container component="main" maxWidth="xs" >
+			<Container component="main" maxWidth="xs">
 				<Typography component="h1" variant="h5">
 					Log In
-		  </Typography>
+				</Typography>
 				<form className={classes.form} onChange={onChange} onSubmit={onSubmit}>
 					<TextField
 						name="userName"
@@ -105,28 +94,18 @@ function LoginPage() {
 						id="password"
 						autoComplete="current-password"
 					/>
-					<Button
-						type="submit"
-						fullWidth
-						variant="contained"
-						color="primary"
-						className={classes.submit}
-					>
+					<Button type="submit" fullWidth variant="contained" color="primary" className={classes.submit}>
 						log In
-			</Button>
+					</Button>
 					<Link onClick={handleRegister} variant="body2">
 						{"Don't have an account? Sign Up"}
 					</Link>
 				</form>
 
-				<Box mt={8}>
-				</Box>
+				<Box mt={8}></Box>
 			</Container>
 		</div>
 	);
-
-};
+}
 
 export default LoginPage;
-
-

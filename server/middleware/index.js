@@ -1,3 +1,5 @@
+const { JWT } = require('../config');
+
 async function hasToken(req, res, next) {
 	try {
 		const userToken = req.cookies.token;
@@ -12,8 +14,6 @@ async function hasToken(req, res, next) {
 		return res.status(401).json({ message: 'not authoticated' });
 	}
 }
-
-
 
 function isAdmin(req, res, next) {
 	if (req.user.role !== 1) return res.status(403).json({ message: 'not autorirezed' });

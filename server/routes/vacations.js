@@ -3,102 +3,22 @@ const { isAdmin } = require('../middleware');
 const multer = require('multer');
 const upload = multer({ dest: 'public/images/', preservePath: true });
 
-
-
 const controller = require('../controller');
-//getAllVacations
+
 router.get('/', controller.vacations.getVacations);
-
-// create
 router.post('/', isAdmin, upload.single('image'), controller.vacations.create);
-
-
-
+router.post('/follow', controller.vacations.follow);
 
 // delete vacations
-router.delete('/:id', async (req, res) => {
-	try {
-		const { id } = req.params;
-		const queryF = `DELETE FROM Followers WHERE vacationId = ${id};`;
-		const query = `DELETE FROM Vacations WHERE id = ${id};`;
-		// query databa
-		const [followrsResult] = await global.connection.execute(queryF);
-		const [vacations] = await global.connection.execute(query);
-		res.json(vacations);
-		global.socket.emit('VACATION_DELETE', { id: +id });
-		console.log(`vacation ${id} was deleted`);
-	} catch (error) {
-		console.log('delete vacation err:', error.message);
-		res.status(500).json({ message: 'Server error' });
-	}
-});
+router.delete('/:id', controller.vacations.delete);
 
 // remove follow from vacations
-router.delete('/follow/:id', async (req, res) => {
-	try {
-		const { id } = req.params;
-		const query = `
-			DELETE FROM Followers 
-			WHERE userId=${req.user.id} AND
-			vacationId=${+id}
-		`;
-		const [result] = await global.connection.execute(query);
-		console.log(`user ${req.user.id} unfollow vacation ${id}`);
-		res.json({ id: result });
-	} catch (error) {
-		console.log('delete follow folow err', error.message);
-		res.status(500).json({ message: 'Server error' });
-	}
-});
-
+router.delete('/follow/:id', controller.vacations.unFollow);
 
 // reports
-router.get('/reports', async (req, res) => {
-	try {
-		const query = `
-			SELECT COUNT(userId)as count, destination, vacationId
-			FROM vacations, followers
-			WHERE vacations.id = followers.vacationId
-			GROUP BY vacations.destination
-		`;
-		// query databa
-		const [result] = await global.connection.execute(query);
-		console.log(result)
-		res.json(result);
-	} catch (error) {
-		console.log('get reports vacation err', error.message);
-		res.status(500).json({ message: 'Server error' });
-	}
-});
+router.get('/reports', controller.vacations.reports);
 
-
-
-// update vacation details 
-router.put('/:id', isAdmin, upload.single('image'), async (req, res) => {
-	try {
-		const { body, file } = req;
-		const { id } = req.params;
-		const image = `/images/${file?.filename}`;
-		console.log('body', body);
-		console.log('file', file);
-		const { description, price, destination, startDate, endDate } = req.body;
-		const imageSet = file ? `, image='${image}'` : '';
-		const query = `
-         UPDATE  Vacations 
-			SET description='${description}', price=${price}, 
-         destination='${destination}', startDate='${startDate}', 
-         endDate='${endDate}' ${imageSet}
-         WHERE id=${id}
-		`;
-		const [result] = await global.connection.execute(query);
-		const newVacation = { id: +id, description, price, destination, startDate, endDate, image };
-		res.json(newVacation);
-		global.socket.emit('VACATION_EDIT', newVacation);
-	} catch (error) {
-		console.log('login err', error.message);
-		res.status(500).json({ message: 'Server error' });
-	}
-});
-
+// update vacation details
+router.put('/:id', isAdmin, upload.single('image'), controller.vacations.update);
 
 module.exports = router;

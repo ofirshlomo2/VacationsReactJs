@@ -55,8 +55,6 @@ function App() {
 		};
 	}, [user]);
 
-
-
 	useEffect(() => {
 		async function getVacations() {
 			const res = await fetch('/api/vacations');
@@ -66,15 +64,11 @@ function App() {
 		getVacations();
 	}, []);
 
-
-
 	if (loading) return <div className="loader">loading....</div>;
-
-
 
 	return (
 		<div className="App">
-			< Header props={user, isAdmin} />
+			<Header user={user} isAdmin={isAdmin} />
 			<main>
 				<Switch>
 					<Route exact path="/">

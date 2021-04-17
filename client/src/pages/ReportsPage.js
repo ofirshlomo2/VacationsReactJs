@@ -1,6 +1,5 @@
 import { useRef, useEffect, useState } from 'react';
 
-
 import {
 	Chart,
 	ArcElement,
@@ -58,21 +57,17 @@ export default () => {
 	const canvasRef = useRef(null);
 	const [data, setData] = useState([]);
 
-
 	useEffect(() => {
 		async function getVacations() {
-			const res = await fetch('/reports');
+			const res = await fetch('/api/vacations/reports');
 			const body = await res.json();
 			setData(body);
 		}
 		getVacations();
 	}, []);
 
-
-
-
 	useEffect(() => {
-		console.log(data)
+		console.log(data);
 		var ctx = canvasRef.current.getContext('2d');
 		var myChart = new Chart(ctx, {
 			type: 'bar',
