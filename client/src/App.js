@@ -2,13 +2,13 @@
 
 import { useState } from 'react';
 
-import { Switch, Route, NavLink, useHistory, Redirect } from 'react-router-dom';
+import { Switch, Route, useHistory, Redirect } from 'react-router-dom';
 import { useEffect } from 'react';
 import { LoginPage, RegisterPage, HomePage, ReportsPage } from './pages';
 import { Actions, Selectors } from './store';
 import { useDispatch, useSelector } from 'react-redux';
 
-import socketIOClient from 'socket.io-client';
+//import socketIOClient from 'socket.io-client';
 
 import { useSocket } from './hooks';
 import './App.css';

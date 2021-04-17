@@ -37,7 +37,7 @@ server.listen(5000, async () => {
 		database: 'vacationdb',
 		host: 'localhost',
 		user: 'root',
-		password: '123qwe!!', //123qwe!!
+		password: 'ofirshlomo', //123qwe!!
 	});
 	global.connection = connection;
 	console.log('server work 5000');

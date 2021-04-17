@@ -1,4 +1,7 @@
 import { useRef, useEffect, useState } from 'react';
+import Button from '@material-ui/core/Button';
+import { ButtonGroup } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 import {
 	Chart,
@@ -112,7 +115,13 @@ export default () => {
 
 	return (
 		<div className="reportPage">
-			<button>HomePage</button>
+					<ButtonGroup color="primary" aria-label="outlined primary button group">
+					<Link to="/">
+						<Button variant="contained" color="primary">
+							HomePage
+						</Button>
+					</Link>
+					</ButtonGroup>
 			<div>
 				<canvas ref={canvasRef} width="100" height="100"></canvas>
 			</div>

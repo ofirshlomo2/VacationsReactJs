@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, Link } from 'react-router-dom';
 import { Actions, Selectors } from '../store';
-import { VacationList, VacationModal } from '../components/';
-import { ButtonGroup } from '@material-ui/core';
+import { Vacation, VacationList, VacationModal } from '../components/';
 
 import { makeStyles } from '@material-ui/core/styles';
 import Button from '@material-ui/core/Button';
@@ -32,6 +31,7 @@ function HomePage() {
 			},
 		},
 	}));
+
 	async function logOutFanction() {
 		const res = await fetch('/api/auth/logout');
 		history.push('/login');
@@ -43,20 +43,24 @@ function HomePage() {
 	return (
 		<div className="Home">
 			<div className="header">Hello : {user?.firstName}</div>
-			<ButtonGroup color="primary" aria-label="outlined primary button group">
-				<Button olor="primary" onClick={logOutFanction}>Log Out</Button>
-				{isAdmin && (
-					<div>
-						<Button variant="contained" color="secondary" onClick={onOpenModal}>
-							Add Vacation
+			
+			<div>
+				<Button variant="contained" color="primary" onClick={logOutFanction}>
+					Log Out
+				</Button>
+			</div>
+			{isAdmin && (
+				<div>
+					<Button variant="contained" color="secondary" onClick={onOpenModal}>
+						Add Vacation
 					</Button>
-						<Link to="/reports">
-							<Button variant="contained" color="primary">
-								Reports
+					<Link to="/reports">
+						<Button variant="contained" color="primary">
+							Reports
 						</Button>
-						</Link>
-					</div>)}
-			</ButtonGroup>
+					</Link>
+				</div>
+			)}
 
 			<VacationList user={user} vacations={vacations} />
 			<VacationModal />

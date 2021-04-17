@@ -4,7 +4,8 @@ import { Actions } from '../../store';
 import DeleteIcon from '@material-ui/icons/Delete';
 import EditIcon from '@material-ui/icons/Edit';
 import FavoriteIcon from '@material-ui/icons/Favorite';
-import FavoriteTwoToneIcon from '@material-ui/icons/FavoriteTwoTone';
+
+
 
 
 
@@ -24,7 +25,6 @@ function VacationList(props) {
 		});
 		dispatch(Actions.vacations.delete(vacationId));
 	};
-
 
 
 	const toggleFollow = async vacationId => {
@@ -69,7 +69,7 @@ function VacationList(props) {
 					<EditIcon onClick={() => dispatch(Actions.vacationModal.open({ vacation, isEdit: true }))}> </EditIcon>
 					]
 					: [
-						<FavoriteIcon onClick={() => toggleFollow(vacation.id)}>{isFollow ? 'UnFollow' : 'Follow'}</FavoriteIcon>
+						<FavoriteIcon onClick={() => toggleFollow(vacation.id)}>{isFollow ? <FavoriteIcon color="primary" /> : <FavoriteIcon color="secondary" />}</FavoriteIcon>
 					];
 				return <Vacation key={vacation.id} vacation={vacation} actions={actions} />;
 			})}
