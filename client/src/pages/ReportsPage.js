@@ -115,15 +115,15 @@ export default () => {
 
 	return (
 		<div className="reportPage">
-					<ButtonGroup color="primary" aria-label="outlined primary button group">
-					<Link to="/">
-						<Button variant="contained" color="primary">
-							HomePage
+			<ButtonGroup color="primary" aria-label="outlined primary button group">
+				<Link to="/">
+					<Button variant="contained" color="primary">
+						HomePage
 						</Button>
-					</Link>
-					</ButtonGroup>
-			<div>
-				<canvas ref={canvasRef} width="100" height="100"></canvas>
+				</Link>
+			</ButtonGroup>
+			<div style={{ marginBottom:50}}>
+				<canvas ref={canvasRef} width="100" height="100" style={{ marginBottom:50}}></canvas>
 			</div>
 		</div>
 	);

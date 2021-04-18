@@ -12,6 +12,8 @@ function validateRegister(body) {
 	return null;
 }
 
+
+
 module.exports = {
 	logout: async (req, res) => {
 		try {
@@ -30,7 +32,6 @@ module.exports = {
 	login: async (req, res) => {
 		try {
 			const { userName, password } = req.body;
-
 			const user = await db.auth.login(userName, password);
 			if (!user) return res.status(400).json({ message: 'user name or password not valid' });
 			delete user.password;

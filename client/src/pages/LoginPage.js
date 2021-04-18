@@ -13,10 +13,10 @@ import './login.css';
 
 function LoginPage() {
 	const [form, setForm] = useState({});
-
 	// hook get store.dispatch method
 	const dispatch = useDispatch();
 	const history = useHistory();
+
 
 	const onSubmit = async event => {
 		event.preventDefault();
@@ -35,6 +35,7 @@ function LoginPage() {
 		history.push('/');
 	};
 
+
 	const onChange = event => {
 		const { name, value } = event.target;
 		setForm({ ...form, [name]: value });
@@ -44,6 +45,7 @@ function LoginPage() {
 		history.push('/register');
 	}
 
+	
 	const useStyles = makeStyles(theme => ({
 		paper: {
 			marginTop: theme.spacing(8),

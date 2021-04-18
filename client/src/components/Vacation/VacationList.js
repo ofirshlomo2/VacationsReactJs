@@ -66,10 +66,10 @@ function VacationList(props) {
 				const actions = isAdmin
 					? [<DeleteIcon onClick={() => deleteVacation(vacation.id)}>
 					</DeleteIcon>,
-					<EditIcon onClick={() => dispatch(Actions.vacationModal.open({ vacation, isEdit: true }))}> </EditIcon>
+					<EditIcon color="secondary" onClick={() => dispatch(Actions.vacationModal.open({ vacation, isEdit: true }))}> </EditIcon>
 					]
 					: [
-						<FavoriteIcon onClick={() => toggleFollow(vacation.id)}>{isFollow ? <FavoriteIcon color="primary" /> : <FavoriteIcon color="secondary" />}</FavoriteIcon>
+						<span color="secondary" onClick={() => toggleFollow(vacation.id)}>{isFollow ? <FavoriteIcon color="secondary" /> : <FavoriteIcon color="primary" /> }</span>
 					];
 				return <Vacation key={vacation.id} vacation={vacation} actions={actions} />;
 			})}
